@@ -5,9 +5,8 @@ buildscript {
         lombokVersion = '1.18.22'
         springDocVersion = '2.0.2'
         mapstructVersion = '1.5.3.Final'
+        spotBugsVersion = '5.0.13'
     }
-
-    apply from: file("codequality/codequality.gradle")
 }
 
 plugins {
@@ -16,7 +15,11 @@ plugins {
     id 'eclipse'
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    // https://github.com/spotbugs/spotbugs/issues/1027#issuecomment-552107610
+    id 'com.github.spotbugs' version "${spotBugsVersion}" apply false
 }
+
+apply from: file("codequality/codequality.gradle")
 
 eclipse {
     classpath {
@@ -62,6 +65,9 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // QA
+    // later: pitest "org.pitest:pitest-junit-5-plugin:${piTestVersion}"
 }
 
 tasks.named('test') {

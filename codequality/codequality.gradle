@@ -2,6 +2,7 @@ apply plugin: "java" // https://stackoverflow.com/a/43875557
 apply plugin: "checkstyle"
 apply plugin: "pmd"
 apply plugin: "jacoco"
+apply plugin: 'com.github.spotbugs'
 
 checkstyle {
     toolVersion '10.7.0'
@@ -13,6 +14,26 @@ pmd {
     consoleOutput = true
     incrementalAnalysis = true
     ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
+}
+
+spotbugsMain {
+    reportLevel = "medium"
+    effort = "max"
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+    excludeFilter.set(file('codequality/spotbugsMain-exclude.xml'))
+}
+
+spotbugsTest {
+    reportLevel = "medium"
+    effort = "min"
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+    excludeFilter.set(file('codequality/spotbugsTest-exclude.xml'))
 }
 
 jacoco {
@@ -73,6 +94,8 @@ test {
     dependsOn checkstyleTest
     dependsOn pmdMain
     dependsOn pmdTest
+    dependsOn spotbugsMain
+    dependsOn spotbugsTest
 
     finalizedBy jacocoTestReport // report is always generated after tests run
 }

@@ -1,3 +1,6 @@
+### 0.0.9-SNAPSHOT
+Added and configured Spotbugs (Findbugs)
+
 ### 0.0.8-SNAPSHOT
 Fixed Checkstyle and PMD errors, increased test coverage
 
@@ -18,7 +21,6 @@ Replaced SpringFox preparation with SpringDoc: SpringFox is not compatible with 
 
 ### 0.0.2-SNAPSHOT
 More accurate gradle configuration (group, artifact, version) using `gradle.properties` file
-
 
 ### 0.0.1-SNAPSHOT
 Initial project setup
