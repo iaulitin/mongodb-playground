@@ -66,4 +66,13 @@ jacocoTestCoverageVerification {
         }
     }
 }
+
 check.dependsOn jacocoTestCoverageVerification
+test {
+    dependsOn checkstyleMain
+    dependsOn checkstyleTest
+    dependsOn pmdMain
+    dependsOn pmdTest
+
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}

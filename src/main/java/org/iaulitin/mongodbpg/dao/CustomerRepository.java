@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface CustomerRepository extends MongoRepository<Customer, UUID> {
 
+    @Override
     Page<Customer> findAll(Pageable pageable);
 
     List<Customer> findByFirstName(String firstName, Pageable pageable);

@@ -1,3 +1,6 @@
+### 0.0.8-SNAPSHOT
+Fixed Checkstyle and PMD errors, increased test coverage
+
 ### 0.0.7-SNAPSHOT
 Configured JaCoCo
 
