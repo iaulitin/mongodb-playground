@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+
+  ########################################################
+  # In order to connect to the db using root creds:      #
+  # 1 Connect to the mongo container                     #
+  # 2 $ mongosh                                          #
+  # 3 test> use admin (switch to the default "admin" DB) #
+  # 4 admin> db.auth("root","root")                      #
+  ########################################################
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    # create a local_db DB and a user for application to connect
+    volumes:
+      - ./local/mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+
+  # UI admin interface for Mongo
+  # It uses root/root credentials to connect to the MongoDB
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongodb:27017/
+    depends_on:
+      - mongodb
