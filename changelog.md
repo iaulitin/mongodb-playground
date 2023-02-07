@@ -1,3 +1,6 @@
+### 0.0.4-SNAPSHOT
+MapStruct dependency and usage, customer API extension
+
 ### 0.0.3-SNAPSHOT
 Replaced SpringFox preparation with SpringDoc: SpringFox is not compatible with SB3 yet
 
