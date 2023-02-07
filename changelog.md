@@ -1,3 +1,6 @@
+### 0.0.6-SNAPSHOT
+Configured PMD
+
 ### 0.0.5-SNAPSHOT
 Configured Checkstyle
 

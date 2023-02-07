@@ -1,6 +1,14 @@
 apply plugin: "checkstyle"
+apply plugin: "pmd"
 
 checkstyle {
     toolVersion '10.7.0'
     configFile = file("${project.rootDir}/codequality/checkstyle.xml")
+}
+
+pmd {
+    toolVersion = "6.54.0"
+    consoleOutput = true
+    incrementalAnalysis = true
+    ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
 }
