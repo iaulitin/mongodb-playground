@@ -3,7 +3,6 @@ package org.iaulitin.mongodbpg.configuration;
 import lombok.extern.slf4j.Slf4j;
 import org.iaulitin.mongodbpg.entity.Customer;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
-import org.springframework.data.mongodb.core.mapping.event.AfterLoadEvent;
 import org.springframework.data.mongodb.core.mapping.event.BeforeConvertEvent;
 import org.springframework.stereotype.Component;
 

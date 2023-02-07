@@ -1,3 +1,6 @@
+### 0.0.5-SNAPSHOT
+Configured Checkstyle
+
 ### 0.0.4-SNAPSHOT
 MapStruct dependency and usage, customer API extension
 
