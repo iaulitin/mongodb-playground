@@ -1,3 +1,6 @@
+### 0.0.7-SNAPSHOT
+Configured JaCoCo
+
 ### 0.0.6-SNAPSHOT
 Configured PMD
 

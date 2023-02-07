@@ -1,20 +1,35 @@
 buildscript {
-	ext {
-		springBootVersion = '3.0.1'
-		springDependencyManagementVersion = '1.1.0'
-		lombokVersion = '1.18.22'
-		springDocVersion = '2.0.2'
-		mapstructVersion = '1.5.3.Final'
-		mapstructVersion = '1.5.3.Final'
-	}
+    ext {
+        springBootVersion = '3.0.1'
+        springDependencyManagementVersion = '1.1.0'
+        lombokVersion = '1.18.22'
+        springDocVersion = '2.0.2'
+        mapstructVersion = '1.5.3.Final'
+    }
 
-	apply from: file("codequality/codequality.gradle")
+    apply from: file("codequality/codequality.gradle")
 }
 
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version "${springBootVersion}"
-	id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+}
+
+eclipse {
+    classpath {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
 }
 
 group groupId
@@ -22,34 +37,37 @@ sourceCompatibility = '17'
 targetCompatibility = '17'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
 
-	// Lombok should be declared before mapstruct https://stackoverflow.com/a/69649688
-	compileOnly 'org.projectlombok:lombok'
-	testImplementation "org.projectlombok:lombok:${lombokVersion}"
-	annotationProcessor 'org.projectlombok:lombok'
+    // Lombok should be declared before mapstruct https://stackoverflow.com/a/69649688
+    compileOnly 'org.projectlombok:lombok'
+    testImplementation "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor 'org.projectlombok:lombok'
 
-	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
 }
