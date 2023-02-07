@@ -3,7 +3,8 @@ buildscript {
 		springBootVersion = '3.0.1'
 		springDependencyManagementVersion = '1.1.0'
 		lombokVersion = '1.18.22'
-//		springFoxVersion = '3.0.0'
+		springDocVersion = '2.0.2'
+//		mapstructVersion = '1.5.3.Final'
 	}
 }
 
@@ -30,7 +31,8 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation "io.springfox:springfox-boot-starter:${springFoxVersion}"
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
+//	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     testImplementation "org.projectlombok:lombok:${lombokVersion}"
     compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
