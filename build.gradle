@@ -34,12 +34,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
 
-	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-
+	// Lombok should be declared before mapstruct https://stackoverflow.com/a/69649688
 	compileOnly 'org.projectlombok:lombok'
 	testImplementation "org.projectlombok:lombok:${lombokVersion}"
 	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
