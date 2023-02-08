@@ -8,18 +8,18 @@ import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import org.mapstruct.factory.Mappers;
+
+import static org.iaulitin.mongodbpg.common.Constants.SPRING_COMPONENT_MODEL;
 
 // https://www.baeldung.com/mapstruct-ignore-unmapped-properties
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = SPRING_COMPONENT_MODEL, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CustomerMapper {
-    CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-    Customer toEntityCreate(CustomerCreateRequest customerCreateRequest);
+    Customer toCreateEntity(CustomerCreateRequest customerCreateRequest);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "additionalInfo", source = "additionalInfo")
-    Customer toEntityUpdate(CustomerUpdateRequest customerUpdateRequest);
+    Customer toUpdateEntity(CustomerUpdateRequest customerUpdateRequest);
 
     CustomerResponse toDto(Customer customer);
 }

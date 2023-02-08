@@ -63,7 +63,7 @@ public class CustomerService {
     }
 
     public CustomerResponse createCustomer(CustomerCreateRequest customerCreateRequest) {
-        Customer customer = customerMapper.toEntityCreate(customerCreateRequest);
+        Customer customer = customerMapper.toCreateEntity(customerCreateRequest);
         customerRepository.save(customer);
         return customerMapper.toDto(customer);
     }
@@ -72,7 +72,7 @@ public class CustomerService {
         Customer customer = customerRepository.findById(uuid)
                 .orElseThrow(ResourceNotFoundException::new);
 
-        customer.setAdditionalInfo(customerMapper.toEntityUpdate(customerUpdateRequest).getAdditionalInfo());
+        customer.setAdditionalInfo(customerMapper.toUpdateEntity(customerUpdateRequest).getAdditionalInfo());
         customerRepository.save(customer);
 
         return customerMapper.toDto(customer);

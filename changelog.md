@@ -1,3 +1,6 @@
+### 0.0.11-SNAPSHOT
+Minor improvements
+
 ### 0.0.10-SNAPSHOT
 Added and configured PiTest
 
