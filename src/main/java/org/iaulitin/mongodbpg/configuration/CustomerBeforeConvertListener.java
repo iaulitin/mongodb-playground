@@ -15,8 +15,8 @@ public class CustomerBeforeConvertListener extends AbstractMongoEventListener<Cu
     @Override
     public void onBeforeConvert(BeforeConvertEvent<Customer> event) {
         super.onBeforeConvert(event);
-        Customer customer = event.getSource();
 
+        Customer customer = event.getSource();
         if (customer.getUuid() == null) {
             customer.setUuid(UUID.randomUUID());
             log.debug("Creating a customer {} using onBeforeConvert", customer);
