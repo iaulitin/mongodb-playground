@@ -1,3 +1,6 @@
+### 0.0.10-SNAPSHOT
+Added and configured PiTest
+
 ### 0.0.9-SNAPSHOT
 Added and configured Spotbugs (Findbugs)
 

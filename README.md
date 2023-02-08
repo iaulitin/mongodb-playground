@@ -11,7 +11,20 @@ The project can be used as a playground for MongoDB
 - Spring Doc
 - MapStruct
 
+### Build & Run
 
+To build a project you can use:
+
+```bash
+gradle clean build
+```
+
+To build with [PiTest](https://github.com/pitest/pitest-junit5-plugin):
+
+```bash
+gradle clean build pitest
+```
 
 ### How-to's
+
 In order to do API calls you can utilize swagger UI, which is accessible through URL: `/swagger-ui/index.html`

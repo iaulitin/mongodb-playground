@@ -1,16 +1,24 @@
 apply plugin: "java" // https://stackoverflow.com/a/43875557
 apply plugin: "checkstyle"
 apply plugin: "pmd"
-apply plugin: "jacoco"
 apply plugin: 'com.github.spotbugs'
+apply plugin: "jacoco"
+// https://www.javacodegeeks.com/2020/03/pit-junit-5-and-gradle-with-just-one-extra-line-of-configuration.html
+// https://stackoverflow.com/questions/62323783/pitest-issue-property-mainclass-is-final-and-cannot-be-changed-any-further
+apply plugin: 'info.solidsoft.pitest'
+
+def checkstyleToolVersion = '10.7.0'
+def pmdToolVersion = '6.54.0'
+def jacocoToolVersion = '0.8.8'
+def junit5PitestPluginVersion = '1.1.1'
 
 checkstyle {
-    toolVersion '10.7.0'
+    toolVersion "${checkstyleToolVersion}"
     configFile = file("${project.rootDir}/codequality/checkstyle.xml")
 }
 
 pmd {
-    toolVersion = "6.54.0"
+    toolVersion = "${pmdToolVersion}"
     consoleOutput = true
     incrementalAnalysis = true
     ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
@@ -37,9 +45,10 @@ spotbugsTest {
 }
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion "${jacocoToolVersion}"
 }
 
+// https://docs.gradle.org/current/userguide/jacoco_plugin.html#sec:jacoco_report_violation_rules
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
     reports {
@@ -62,7 +71,6 @@ jacocoTestReport {
         }))
     }
 }
-
 
 jacocoTestCoverageVerification {
     violationRules {
@@ -88,7 +96,6 @@ jacocoTestCoverageVerification {
     }
 }
 
-check.dependsOn jacocoTestCoverageVerification
 test {
     dependsOn checkstyleMain
     dependsOn checkstyleTest
@@ -97,5 +104,18 @@ test {
     dependsOn spotbugsMain
     dependsOn spotbugsTest
 
-    finalizedBy jacocoTestReport // report is always generated after tests run
+    finalizedBy jacocoTestCoverageVerification // report is always generated after tests run
+}
+
+// https://pitest.org/quickstart/commandline/
+pitest {
+    junit5PluginVersion = "${junit5PitestPluginVersion}"
+    mutationThreshold = 80
+    timestampedReports = false
+    excludedClasses = [
+            'org.iaulitin.mongodbpg.entity.**',
+            'org.iaulitin.mongodbpg.dto.**',
+            'org.iaulitin.mongodbpg.MongodbPgApplication',
+            'org.iaulitin.mongodbpg.mapper.*MapperImpl',
+    ]
 }

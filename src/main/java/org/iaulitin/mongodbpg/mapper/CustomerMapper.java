@@ -7,9 +7,11 @@ import org.iaulitin.mongodbpg.entity.Customer;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+// https://www.baeldung.com/mapstruct-ignore-unmapped-properties
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CustomerMapper {
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
