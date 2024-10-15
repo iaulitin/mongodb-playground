@@ -3,7 +3,7 @@ package org.iaulitin.mongodbpg.mapper;
 import org.iaulitin.mongodbpg.dto.CustomerCreateRequest;
 import org.iaulitin.mongodbpg.dto.CustomerResponse;
 import org.iaulitin.mongodbpg.dto.CustomerUpdateRequest;
-import org.iaulitin.mongodbpg.entity.Customer;
+import org.iaulitin.mongodbpg.entity.CustomerEntity;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,12 +15,12 @@ import static org.iaulitin.mongodbpg.common.Constants.SPRING_COMPONENT_MODEL;
 @Mapper(componentModel = SPRING_COMPONENT_MODEL, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CustomerMapper {
 
-    Customer toCreateEntity(CustomerCreateRequest customerCreateRequest);
+    CustomerEntity toCreateEntity(CustomerCreateRequest customerCreateRequest);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "additionalInfo", source = "additionalInfo")
-    Customer toUpdateEntity(CustomerUpdateRequest customerUpdateRequest);
+    CustomerEntity toUpdateEntity(CustomerUpdateRequest customerUpdateRequest);
 
-    CustomerResponse toDto(Customer customer);
+    CustomerResponse toDto(CustomerEntity customerEntity);
 }
 

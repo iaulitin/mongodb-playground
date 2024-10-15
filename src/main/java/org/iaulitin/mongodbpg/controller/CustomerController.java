@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,9 +28,9 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @GetMapping("/{uuid}")
-    public CustomerResponse getCustomers(@PathVariable("uuid") UUID uuid) {
-        return customerService.getCustomer(uuid);
+    @GetMapping("/{id}")
+    public CustomerResponse getCustomers(@PathVariable("id") String id) {
+        return customerService.getCustomer(id);
     }
 
     @GetMapping
@@ -52,10 +51,10 @@ public class CustomerController {
         return customerService.createCustomer(customerCreateRequest);
     }
 
-    @PutMapping("/{uuid}")
-    public CustomerResponse updateCustomer(@PathVariable("uuid") UUID uuid,
-                                           @RequestBody CustomerUpdateRequest customerCreateRequest) {
-        return customerService.updateCustomer(uuid, customerCreateRequest);
+    @PutMapping("/{id}")
+    public CustomerResponse updateCustomer(@PathVariable("id") String id,
+                                           @RequestBody CustomerUpdateRequest customerUpdateRequest) {
+        return customerService.updateCustomer(id, customerUpdateRequest);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

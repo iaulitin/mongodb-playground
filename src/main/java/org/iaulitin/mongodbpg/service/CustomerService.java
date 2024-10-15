@@ -6,7 +6,7 @@ import org.iaulitin.mongodbpg.dao.CustomerRepository;
 import org.iaulitin.mongodbpg.dto.CustomerCreateRequest;
 import org.iaulitin.mongodbpg.dto.CustomerResponse;
 import org.iaulitin.mongodbpg.dto.CustomerUpdateRequest;
-import org.iaulitin.mongodbpg.entity.Customer;
+import org.iaulitin.mongodbpg.entity.CustomerEntity;
 import org.iaulitin.mongodbpg.mapper.CustomerMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Customer service is used to provide operations over Customer DTO and Entity representations.
@@ -29,9 +28,9 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
-    public CustomerResponse getCustomer(UUID uuid) {
+    public CustomerResponse getCustomer(String id) {
         return customerRepository
-                .findById(uuid)
+                .findById(id)
                 .map(customerMapper::toDto)
                 .orElseThrow(ResourceNotFoundException::new);
     }
@@ -63,18 +62,18 @@ public class CustomerService {
     }
 
     public CustomerResponse createCustomer(CustomerCreateRequest customerCreateRequest) {
-        Customer customer = customerMapper.toCreateEntity(customerCreateRequest);
-        customerRepository.save(customer);
-        return customerMapper.toDto(customer);
+        CustomerEntity customerEntity = customerMapper.toCreateEntity(customerCreateRequest);
+        customerRepository.save(customerEntity);
+        return customerMapper.toDto(customerEntity);
     }
 
-    public CustomerResponse updateCustomer(UUID uuid, CustomerUpdateRequest customerUpdateRequest) {
-        Customer customer = customerRepository.findById(uuid)
+    public CustomerResponse updateCustomer(String id, CustomerUpdateRequest customerUpdateRequest) {
+        CustomerEntity customerEntity = customerRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
 
-        customer.setAdditionalInfo(customerMapper.toUpdateEntity(customerUpdateRequest).getAdditionalInfo());
-        customerRepository.save(customer);
+        customerEntity.setAdditionalInfo(customerMapper.toUpdateEntity(customerUpdateRequest).getAdditionalInfo());
+        customerRepository.save(customerEntity);
 
-        return customerMapper.toDto(customer);
+        return customerMapper.toDto(customerEntity);
     }
 }

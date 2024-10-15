@@ -8,4 +8,5 @@ public class CustomerCreateRequest {
     private String firstName;
     private String lastName;
     private CustomerAdditionalInfoDto additionalInfo;
+
 }

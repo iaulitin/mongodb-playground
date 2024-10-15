@@ -1,3 +1,6 @@
+### 0.0.12-SNAPSHOT
+Reworked & simplified Mongo ID model, dependencies upgrade
+
 ### 0.0.11-SNAPSHOT
 Minor improvements
 

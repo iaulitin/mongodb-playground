@@ -28,7 +28,6 @@ insertData = () => {
 
 insertCustomers = () => {
     db.customers.insert({
-        "uuid": "a3ffc197-ce86-483b-b635-a1a25058defd",
         "firstName": "AAA",
         "lastName": "AAAAA",
         "additionalInfo": {
@@ -36,7 +35,6 @@ insertCustomers = () => {
         }
     });
     db.customers.insert({
-        "uuid": "7838bf96-4b9b-443d-a4c2-e75a1f363c82",
         "firstName": "BBB",
         "lastName": "BBBBB",
         "additionalInfo": {
@@ -44,7 +42,6 @@ insertCustomers = () => {
         }
     });
     db.customers.insert({
-        "uuid": "aca332a5-8030-4014-a6ba-678d9555073a",
         "firstName": "CCC",
         "lastName": "CCCCC",
         "additionalInfo": {
@@ -52,7 +49,6 @@ insertCustomers = () => {
         }
     });
     db.customers.insert({
-        "uuid": "cbca35bd-3684-41dc-b6b5-27cd930f1fb2",
         "firstName": "DDD",
         "lastName": "DDDDD",
         "additionalInfo": {
@@ -61,7 +57,6 @@ insertCustomers = () => {
         }
     });
     db.customers.insert({
-        "uuid": "88a1a984-d8bf-44f3-8d2c-b286a93611c0",
         "firstName": "EEE",
         "lastName": "EEEEE",
         "additionalInfo": {
