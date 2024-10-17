@@ -39,9 +39,9 @@ class CustomerControllerTest {
     class GetCustomer {
         @Test
         void getCustomersHappyPath() throws Exception {
-            UUID uuid = UUID.randomUUID();
+            String uuid = UUID.randomUUID().toString();
             CustomerResponse customerResponse = CustomerResponse.builder()
-                    .uuid(uuid)
+                    .id(uuid)
                     .firstName("firstName")
                     .lastName("lastName")
                     .build();
@@ -59,7 +59,7 @@ class CustomerControllerTest {
 
         @Test
         void getCustomersIfNoCustomerThen404() throws Exception {
-            UUID uuid = UUID.randomUUID();
+            String uuid = UUID.randomUUID().toString();
 
             when(customerService.getCustomer(eq(uuid))).thenThrow(new ResourceNotFoundException());
 

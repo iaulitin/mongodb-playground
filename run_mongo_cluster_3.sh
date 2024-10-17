@@ -1,0 +1,1 @@
+docker-compose -f docker-compose-3-nodes-with-replica-set_keyfile_auth.yml up --detach --force-recreate

@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Local mongo data ###
+/local/mongodb/data/**
