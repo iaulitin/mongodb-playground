@@ -4,12 +4,12 @@ In order to be able to use the keyfile
 
 Generate the key
 ```bash
-openssl rand -base64 756 > <path-to-keyfile>
+openssl rand -base64 756 > keyfile
 ```
 
 Provide the required permission to use the file
 ```bash
-chmod 400 <path-to-keyfile>
+chmod 400 keyfile
 ```
 
 # Configuration
