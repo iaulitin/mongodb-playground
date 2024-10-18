@@ -54,44 +54,14 @@ insertData = () => {
 }
 
 insertCustomers = () => {
-    db.customers.insert({
-        "firstName": "AAA",
-        "lastName": "AAAAA",
-        "additionalInfo": {
-            "phone": "111111111111"
-        }
-    });
-    db.customers.insert({
-        "firstName": "BBB",
-        "lastName": "BBBBB",
-        "additionalInfo": {
-            "phone": "222222222222"
-        }
-    });
-    db.customers.insert({
-        "firstName": "CCC",
-        "lastName": "CCCCC",
-        "additionalInfo": {
-            "phone": "333333333333"
-        }
-    });
-    db.customers.insert({
-        "firstName": "DDD",
-        "lastName": "DDDDD",
-        "additionalInfo": {
-            "address": "adddddddresssss1",
-            "phone": "444444444444"
-        }
-    });
-    db.customers.insert({
-        "firstName": "EEE",
-        "lastName": "EEEEE",
-        "additionalInfo": {
-            "email": "aa@aa.aa",
-            "address": "adddddddresssss1",
-            "phone": "555555555555"
-        }
-    });
+    // example
+    // db.customers.insert({
+    //     "firstName": "AAA",
+    //     "lastName": "AAAAA",
+    //     "additionalInfo": {
+    //         "phone": "111111111111"
+    //     }
+    // });
 }
 
 

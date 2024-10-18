@@ -4,7 +4,6 @@ buildscript {
         springDependencyManagementVersion = '1.1.0'
         lombokVersion = '1.18.34'
         springDocVersion = '2.6.0'
-        mapstructVersion = '1.5.3.Final'
         spotBugsVersion = '5.0.13'
         gradlePitestPluginVersion = '1.9.0'
     }
@@ -58,13 +57,9 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    // Lombok should be declared before mapstruct https://stackoverflow.com/a/69649688
     compileOnly 'org.projectlombok:lombok'
     testImplementation "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor 'org.projectlombok:lombok'
-
-    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
