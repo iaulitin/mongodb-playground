@@ -2,46 +2,76 @@ version: '3.7'
 
 services:
 
-  # TODO currently I have to make some manual actions on the primary node every time I start the stack without the data - this should be automated, but was taking too long to figure out all the issues
-  # $ mongosh
-  # test> use admin
-  # admin> db.createUser({"user":"root","pwd":"root","roles":[{"role":"root","db":"admin"}]})
-  # admin> db.createUser({user:"app_name",pwd:"password",roles:[{role:"readWrite",db:"local_db"}]})
-  # admin> exit
-  # $ cat /docker-entrypoint-initdb.d/mongo-init.js | mongosh -u root --password root --authenticationDatabase admin
-  # see also https://medium.com/workleap/the-only-local-mongodb-replica-set-with-docker-compose-guide-youll-ever-need-2f0b74dd8384
-  mongodb-1:
+  # Config servers (typically a replica set)
+  config-server-1:
     image: mongo:latest
     command: [ "bash", "-c",
       "chmod 400 /configdb/keyfile \
-      && mongod --config /configdb/mongod.conf --port 27017"
+      && mongod --configsvr --config /configdb/mongod.conf --replSet configReplSet --port 27040"
+    ]
+    ports:
+      - "27040:27040"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    volumes:
+      - ./local/mongodb/data/mongodb-config-server-1:/data/db
+      - ./local/mongodb/config_three_instances/common:/configdb
+
+  config-server-2:
+    image: mongo:latest
+    command: [ "bash", "-c",
+      "chmod 400 /configdb/keyfile \
+      && mongod --configsvr --config /configdb/mongod.conf --replSet configReplSet --port 27041"
+    ]
+    ports:
+      - "27041:27041"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    volumes:
+      - ./local/mongodb/data/mongodb-config-server-2:/data/db
+      - ./local/mongodb/config_three_instances/common:/configdb
+
+  config-server-3:
+    image: mongo:latest
+    command: [ "bash", "-c",
+      "chmod 400 /configdb/keyfile \
+      && mongod --configsvr --config /configdb/mongod.conf --replSet configReplSet --port 27042"
+    ]
+    ports:
+      - "27042:27042"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    volumes:
+      - ./local/mongodb/data/mongodb-config-server-3:/data/db
+      - ./local/mongodb/config_three_instances/common:/configdb
+
+  # TODO currently I have to make some manual actions on the primary node every time I start the stack without the data - this should be automated, but was taking too long to figure out all the issues
+  mongodb-shard1-1:
+    image: mongo:latest
+    command: [ "bash", "-c",
+      "chmod 400 /configdb/keyfile \
+      && mongod --shardsvr --config /configdb/mongod.conf --replSet shard1 --port 27017"
     ]
     ports:
       - "27017:27017"
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    healthcheck:
-      # initialize a replicaset on first healthcheck failure
-      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017',priority:1},{_id:1,host:'host.docker.internal:27027',priority:0.5},{_id:2,host:'host.docker.internal:27037',priority:0.5}]}) }" | mongosh --port 27017 --quiet
-      interval: 5s
-      timeout: 30s
-      start_period: 0s
-      start_interval: 1s
-      retries: 30
     environment:
       IS_REPLICA_SET_SETUP: true
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - ./local/mongodb/data/mongodb-1:/data/db
+      - ./local/mongodb/data/mongodb-shard1-1:/data/db
       - ./local/mongodb/config_three_instances/common:/configdb
-      - ./local/mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
-  mongodb-2:
+  mongodb-shard1-2:
     image: mongo:latest
     command: [ "bash", "-c",
       "chmod 400 /configdb/keyfile \
-      && mongod --config /configdb/mongod.conf --port 27027"
+      && mongod --shardsvr --config /configdb/mongod.conf --replSet shard1 --port 27027"
     ]
     ports:
       - "27027:27027"
@@ -51,14 +81,14 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - ./local/mongodb/data/mongodb-2:/data/db
+      - ./local/mongodb/data/mongodb-shard1-2:/data/db
       - ./local/mongodb/config_three_instances/common:/configdb
 
-  mongodb-3:
+  mongodb-shard1-3:
     image: mongo:latest
     command: [ "bash", "-c",
       "chmod 400 /configdb/keyfile \
-      && mongod --config /configdb/mongod.conf --port 27037"
+      && mongod --shardsvr --config /configdb/mongod.conf --replSet shard1 --port 27037"
     ]
     ports:
       - "27037:27037"
@@ -68,19 +98,79 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - ./local/mongodb/data/mongodb-3:/data/db
+      - ./local/mongodb/data/mongodb-shard1-3:/data/db
       - ./local/mongodb/config_three_instances/common:/configdb
 
-  mongo-express:
-    image: mongo-express:latest
-    restart: always
+  mongodb-shard2-1:
+    image: mongo:latest
+    command: [ "bash", "-c",
+      "chmod 400 /configdb/keyfile \
+      && mongod --shardsvr --config /configdb/mongod.conf --replSet shard2 --port 27018"
+    ]
     ports:
-      - "8081:8081"
+      - "27018:27018"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongodb-1:27017,mongodb-2:27027,mongodb-3:27037/?replicaSet=rs0&authSource=admin
+      IS_REPLICA_SET_SETUP: true
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./local/mongodb/data/mongodb-shard2-1:/data/db
+      - ./local/mongodb/config_three_instances/common:/configdb
+
+  mongodb-shard2-2:
+    image: mongo:latest
+    command: [ "bash", "-c",
+      "chmod 400 /configdb/keyfile \
+      && mongod --shardsvr --config /configdb/mongod.conf --replSet shard2 --port 27028"
+    ]
+    ports:
+      - "27028:27028"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./local/mongodb/data/mongodb-shard2-2:/data/db
+      - ./local/mongodb/config_three_instances/common:/configdb
+
+  mongodb-shard2-3:
+    image: mongo:latest
+    command: [ "bash", "-c",
+      "chmod 400 /configdb/keyfile \
+      && mongod --shardsvr --config /configdb/mongod.conf --replSet shard2 --port 27038"
+    ]
+    ports:
+      - "27038:27038"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./local/mongodb/data/mongodb-shard2-3:/data/db
+      - ./local/mongodb/config_three_instances/common:/configdb
+
+  # Mongos Router
+  mongos:
+    image: mongo:latest
+    command: >
+      mongos --config /configdb/mongod.conf --port 27050 --configdb configReplSet/config-server-1:27040,config-server-2:27041,config-server-3:27042
+    ports:
+      - "27050:27050"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     depends_on:
-      - mongodb-1
-      - mongodb-2
-      - mongodb-3
+      - config-server-1
+      - config-server-2
+      - config-server-3
+    restart: always
+    volumes:
+      - ./local/mongodb/data/router:/data/db
+      - ./local/mongodb/config_three_instances/common:/configdb
+

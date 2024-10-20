@@ -6,12 +6,14 @@ import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Sharded;
 
 import java.util.List;
 
 @Data
 @Builder
 @Document(collection = "skus")
+@Sharded
 public class SkuEntity extends AbstractEntity {
 
     @Id
