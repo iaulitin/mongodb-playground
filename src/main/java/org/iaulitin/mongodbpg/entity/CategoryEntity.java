@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Builder
 @Document(collection = "categories")
-public class CategoryEntity {
+public class CategoryEntity extends AbstractEntity {
 
     @Id
     private String id;

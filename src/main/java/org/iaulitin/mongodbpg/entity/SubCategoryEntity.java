@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Builder
 @Document(collection = "sub-categories")
-public class SubCategoryEntity {
+public class SubCategoryEntity extends AbstractEntity {
 
     @Id
     private String id;

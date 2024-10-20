@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @Builder
 @Document(collection = "skus")
-public class SkuEntity {
+public class SkuEntity extends AbstractEntity {
 
     @Id
     private String id;
